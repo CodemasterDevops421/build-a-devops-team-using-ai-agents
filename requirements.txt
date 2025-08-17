@@ -1,8 +1,11 @@
-pydantic
-pytest
-pytest-cov
-requests
+fastapi
+uvicorn
 python-dotenv
+supabase
+pydantic
+pydantic-ai
+requests
 PyGithub
 groq
-pydantic-ai
+pytest
+pytest-cov
