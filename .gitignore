@@ -285,3 +285,7 @@ $RECYCLE.BIN/
 outputs/
 recommit/
 key*.txt
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/

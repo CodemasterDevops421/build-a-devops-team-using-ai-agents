@@ -1,184 +1,95 @@
-# TALKITDOIT - DevOps AI Agent Team 🤖
+# DevOps AI Control Center
 
-Welcome to the talkitdoit project! This repository contains a team of AI agents that help automate and enhance your DevOps workflow. As featured on our [YouTube Channel](youtube.com/@talkitdoit), these agents work together to handle various DevOps tasks including code review, build prediction, and infrastructure management.
+Production-ready platform combining FastAPI agents with a modern React control panel to automate CI/CD generation, Docker hardening, build prediction, and release monitoring.
 
-[![YouTube Channel](https://img.shields.io/badge/YouTube-Subscribe-red)](https://www.youtube.com/@talkitdoit)
-[![GitHub Stars](https://img.shields.io/github/stars/talkitdoit/talkitdoit-ai?style=social)](https://github.com/talkitdoit/build-a-devops-team-using-ai-agents)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+## Features
+- GitHub Actions workflow synthesis with deterministic lint/test stages
+- Dockerfile authoring with secure base images and non-root guidance
+- Build failure risk scoring using repository context signals
+- Container image readiness checks resilient to offline Docker hosts
+- Front-end dashboard with smooth animations, copy-to-clipboard actions, and structured toasts
 
-## 🌟 Features
+## Architecture
+- **Backend**: FastAPI + Pydantic with pluggable Supabase persistence, structured JSON logging, Prometheus metrics, and strict CORS controls (`ALLOWED_ORIGINS`)
+- **Frontend**: React 18 + Vite + React Query + TypeScript, tested via Vitest/RTL
+- **Testing**: `pytest` for Python agents/routes, Vitest for UI flows
+- **Tooling**: Makefile targets, Dockerfiles for API/UI, Docker Compose for local orchestration
+- **Observability**: `/healthz`, `/readyz`, `/metrics` (Prometheus), request IDs on every response, structured JSON logs
 
-- 🔄 Automated CI/CD Pipeline Generation
-- 🐳 Docker Configuration Management
-- 📊 Build Success Prediction
-- 🔍 AI-Powered Code Review
-- 💬 Natural Language Interaction
-- 📈 Real-time Build Status Monitoring
+## Requirements
+- Python 3.12+
+- Node.js 20+
+- npm 10+
+- Optional: Docker 24+ for containerized workflows
 
-## 🚀 Prerequisites & Assumptions
+## Environment Variables
+| Variable | Purpose | Default |
+| --- | --- | --- |
+| `GROQ_API_ENDPOINT` | GROQ API base URL | `https://api.groq.com/v1` |
+| `GROQ_API_KEY` | GROQ API token used by agents | _required_ |
+| `SUPABASE_URL` | Optional Supabase REST endpoint | _in-memory fallback_ |
+| `SUPABASE_KEY` | Optional Supabase service key | _in-memory fallback_ |
+| `ALLOWED_ORIGINS` | Comma-separated list of CORS origins | `http://localhost:5173` |
+| `REQUEST_ID_HEADER` | Header used to propagate request IDs | `X-Request-ID` |
+| `METRICS_ENABLED` | Toggle Prometheus metrics endpoint | `true` |
+| `VITE_API_BASE_URL` | Front-end API target | `http://localhost:8000` |
 
-### Required Accounts (All Free Tiers Work!)
-- GitHub Account ([Sign up here](https://github.com/signup))
-  - Used for repository hosting and CI/CD
-  - Free tier includes unlimited public repositories
-  - Includes GitHub Actions minutes for public repositories
-- GROQ Account ([Sign up here](https://groq.com))
-  - Used for AI model access
-  - Free tier includes sufficient API calls to test the project
-  - No credit card required for initial testing
+Duplicate `.env` files as needed from `frontend/.env.example` and `dot_env_example`.
 
-### Technical Requirements
-- Python 3.13.0 or higher
-- Docker Desktop
-- Git
-- Basic understanding of:
-  - Command line operations
-  - Git commands
-  - YAML file format
-
-### Setting Up GitHub Secrets
-
-This project requires certain secrets to be set up in your GitHub repository. Here's how:
-
-1. Go to your GitHub repository
-2. Click on "Settings" tab
-3. Navigate to "Secrets and variables" → "Actions"
-4. Click "New repository secret"
-5. Add the following secrets:
-   ```
-   GROQ_API_ENDPOINT=https://api.groq.com/v1
-   GROQ_API_KEY=your_groq_api_key
-   GH_TOKEN=your_github_personal_access_token
-   ```
-
-To create a GitHub Personal Access Token:
-1. Go to GitHub Settings → Developer settings → Personal access tokens
-2. Click "Generate new token (classic)"
-3. Give it a name and select these permissions:
-   - `repo` (Full control of private repositories)
-   - `workflow` (Update GitHub Action workflows)
-4. Copy the token immediately (you won't see it again!)
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.13.0 or higher
-- Docker Desktop
-- Git
-- A GROQ API key ([Get one here](https://groq.com))
-- GitHub account with repository access
-
-### Installation
-
-#### macOS
-
+## Local Development
 ```bash
-# Install Homebrew if you haven't already
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Install Python 3.13
-brew install python@3.13
-
-# Install Docker Desktop
-brew install --cask docker
-
-# Clone the repository
-git clone https://github.com/talkitdoit/build-a-devops-team-using-ai-agents.git
-cd build-a-devops-team-using-ai-agents
-
-# Create and activate virtual environment
-python3.13 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+
+cd frontend
+npm install
 ```
 
-#### Windows
-
-```powershell
-# Install Python 3.13 from the official website
-# https://www.python.org/downloads/
-
-# Install Docker Desktop
-# Download from https://www.docker.com/products/docker-desktop
-
-# Clone the repository
-git clone https://github.com/talkitdoit/build-a-devops-team-using-ai-agents.git
-cd build-a-devops-team-using-ai-agents
-
-# Create and activate virtual environment
-python -m venv venv
-.\venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-#### Linux
-
+### Run Services
 ```bash
-# Add Python 3.13 repository
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install python3.13 python3.13-venv
+# Backend
+make backend-dev
 
-# Install Docker
-sudo apt install docker.io
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -aG docker $USER
-
-# Clone the repository
-git clone https://github.com/talkitdoit/build-a-devops-team-using-ai-agents.git
-cd build-a-devops-team-using-ai-agents
-
-# Create and activate virtual environment
-python3.13 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
+# Frontend (new terminal)
+make frontend-dev
 ```
+The UI is served on `http://localhost:5173` and proxies API calls to `http://localhost:8000`.
 
-### Configuration
-
+### Tests
 ```bash
-# Environment variables
-GROQ_API_ENDPOINT=https://api.groq.com/v1
-GROQ_API_KEY=your_groq_api_key
+# Python agents + API
+make backend-test
+
+# Front-end unit tests
+make frontend-test
+
+# Front-end lint + backend Ruff checks
+make lint
 ```
 
-### Usage
-
+## Docker & Compose
 ```bash
-# Activate virtual environment (if not already activated)
-source venv/bin/activate # macOS/Linux
-.\venv\Scripts\activate # Windows
+# Build standalone images
+make docker-build
 
-# Run the main script
-python main.py
+# Run full stack
+make compose-up
+# Tear down
+make compose-down
 ```
+The API image exposes port `8000`; the UI image serves static assets via NGINX on port `5173`.
 
-### Project Structure
+## API Surface
+- `POST /devops/generate-ci` → `{ pipeline_yaml, db_id }`
+- `POST /devops/generate-dockerfile` → `{ dockerfile_content, db_id }`
+- `POST /devops/predict-build` → `{ prediction, db_id }`
+- `POST /devops/check-build-status` → `{ status, db_id }`
+- `GET /healthz` / `GET /readyz` for monitoring probes
 
-```
-talkitdoit-ai/
-├── agents/           # AI agent implementations
-├── models/           # Data models and schemas
-├── utils/           # Utility functions
-├── html/            # Web interface files
-├── .github/workflows/ # GitHub Actions workflows
-├── main.py          # Main orchestration script
-└── requirements.txt  # Python dependencies
-```
-
-This README provides:
-- Clear installation instructions for all major platforms
-- Step-by-step configuration guide
-- Troubleshooting tips
-- Project structure explanation
-- Links to YouTube content
-- Contributing guidelines
-- Professional formatting with emojis and badges
+## Production Notes
+- Configure secrets via environment variables or secret stores; the UI never persists API keys.
+- Tune CORS by setting `ALLOWED_ORIGINS` to the deployed front-end hostname.
+- Enable TLS termination at the ingress/load balancer; the containers expose HTTP by default.
+- Add tracing by wiring OpenTelemetry instrumentation (hooks are in place via FastAPI middleware patterns).
+- Front-end assets build to `dist/` and are served by NGINX with long-lived cache headers.

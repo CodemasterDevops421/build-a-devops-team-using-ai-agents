@@ -1,6 +1,14 @@
-# change the name of this file to .env
+# Copy to `.env` for local overrides
 
+ENVIRONMENT='development'
+ALLOWED_ORIGINS='http://localhost:5173'
+REQUEST_ID_HEADER='X-Request-ID'
+METRICS_ENABLED='true'
+
+GROQ_API_ENDPOINT='https://api.groq.com/v1'
 GROQ_API_KEY='gsk_add_your_key_here'
-GROQ_CHAT_ENDPOINT='https://api.groq.com/openai/v1/chat/completions'
-GROQ_API_ENDPOINT='https://api.groq.com/openai/v1/chat/completions'
+
+SUPABASE_URL=''
+SUPABASE_KEY=''
+
 GITHUB_TOKEN='ghp_add_your_token_here'

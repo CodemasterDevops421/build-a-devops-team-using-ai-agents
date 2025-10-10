@@ -1,9 +1,8 @@
 from pydantic import BaseModel
 from pydantic_ai import Agent  # Replace with actual import if different
 from utils.groq_client import GROQClient
-from models.groq_models import CodeReviewRequest, CodeReviewFeedback
+from models.groq_models import CodeReviewRequest
 from github import Github
-import os
 
 class CodeReviewConfig(BaseModel):
     """
@@ -77,7 +76,6 @@ class CodeReviewAgent(Agent):
 
         for file in files:
             if file.filename.endswith('.py'):  # Focus on Python files
-                file_content = file.patch  # Get the diff
                 # Create review request for the file
                 code_review_request = CodeReviewRequest(
                     file_name=file.filename,
