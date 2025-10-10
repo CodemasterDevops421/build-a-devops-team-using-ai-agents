@@ -3,7 +3,6 @@ from pydantic_ai import Agent  # Replace with actual import if different
 from utils.groq_client import GROQClient
 from models.groq_models import ChatCreateRequest, ChatCreateResponse
 from github import Github
-import os
 from typing import Dict, Any
 
 class ChatAgentConfig(BaseModel):
