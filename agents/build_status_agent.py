@@ -1,59 +1,46 @@
-from pydantic import BaseModel
-from pydantic_ai import Agent
+"""Utilities for querying Docker build status."""
+from __future__ import annotations
+
+import shutil
 import subprocess
 
-class BuildStatusConfig(BaseModel):
-    """
-    Configuration settings for the BuildStatus agent.
-    
-    Attributes:
-        image_tag (str): The Docker image tag to check for existence
-    """
-    image_tag: str
+from pydantic import BaseModel, Field
 
-class BuildStatusAgent(Agent):
-    """
-    An agent that checks the build status of Docker images.
-    
-    This agent verifies whether a specified Docker image exists in the local Docker registry,
-    which is useful for validating successful builds and deployments.
-    """
+
+class BuildStatusConfig(BaseModel):
+    """Configuration for :class:`BuildStatusAgent`."""
+
+    image_tag: str = Field(..., description="Docker image tag to inspect.")
+
+
+class BuildStatusAgent:
+    """Check Docker image status with graceful fallbacks when Docker is absent."""
 
     def __init__(self, config: BuildStatusConfig):
-        """
-        Initialize the BuildStatus agent.
-        
-        Args:
-            config (BuildStatusConfig): Configuration object containing the image tag to check
-        """
-        super().__init__()
         self.config = config
 
     def check_build_status(self) -> str:
-        """
-        Check if a Docker image exists in the local registry.
-        
-        Uses Docker's inspect command to verify the existence of an image.
-        If the image exists, the command returns a 0 exit code.
-        
-        Returns:
-            str: A message indicating whether the image exists or an error message
-                if the check fails
-        """
+        """Return a human readable status message for ``config.image_tag``."""
+
+        if not shutil.which("docker"):
+            return "Docker CLI not available on PATH; skipping inspection."
+
         try:
-            # Run docker inspect command to check if image exists
             result = subprocess.run(
                 ["docker", "inspect", self.config.image_tag],
-                stdout=subprocess.PIPE,    # Capture standard output
-                stderr=subprocess.PIPE,    # Capture error output
-                text=True                  # Return string instead of bytes
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=False,
+                timeout=30,
             )
-            
-            # Check the return code to determine if image exists
-            if result.returncode == 0:
-                return f"Docker image '{self.config.image_tag}' exists."
-            else:
-                return f"Docker image '{self.config.image_tag}' does not exist."
-        except Exception as e:
-            # Handle any errors that occur during the check
-            return f"Error checking build status: {str(e)}"
+        except FileNotFoundError:
+            return "Docker CLI not available on PATH; skipping inspection."
+        except subprocess.SubprocessError as exc:  # pragma: no cover - defensive.
+            return f"Error checking build status: {exc}"
+
+        if result.returncode == 0:
+            return f"Docker image '{self.config.image_tag}' exists."
+
+        detail = result.stderr.strip() or "unknown error"
+        return f"Docker image '{self.config.image_tag}' does not exist ({detail})."

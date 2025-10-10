@@ -1,11 +1,14 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-dotenv
 supabase
 pydantic
 pydantic-ai
+pydantic-settings
+prometheus-client
 requests
 PyGithub
 groq
+ruff
 pytest
 pytest-cov

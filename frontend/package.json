@@ -1,0 +1,38 @@
+{
+  "name": "devops-ai-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.40.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "@vitejs/plugin-react-swc": "^4.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "happy-dom": "^20.0.0",
+    "typescript": "5.5.4",
+    "vite": "^7.1.9",
+    "vitest": "^3.2.4"
+  }
+}
