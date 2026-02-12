@@ -101,3 +101,4 @@ The API image exposes port `8000`; the UI image serves static assets via NGINX o
 - Enable TLS termination at the ingress/load balancer; the containers expose HTTP by default.
 - Add tracing by wiring OpenTelemetry instrumentation (hooks are in place via FastAPI middleware patterns).
 - Front-end assets build to `dist/` and are served by NGINX with long-lived cache headers.
+- `vercel.json` constrains packaged files for `app/main.py` to avoid Serverless unzipped size overruns.
