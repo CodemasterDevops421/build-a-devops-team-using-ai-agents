@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "builds": [
+    {
+      "src": "app/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "functions": {
+    "app/main.py": {
+      "excludeFiles": "{tests/**,frontend/**,docs/**,html/**,.github/**,**/*.md,**/*.sql,**/__pycache__/**,**/.pytest_cache/**}"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app/main.py"
+    }
+  ]
+}
