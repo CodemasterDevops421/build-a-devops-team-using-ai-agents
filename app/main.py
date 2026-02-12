@@ -15,6 +15,7 @@ from .config import get_settings
 from .logging_config import configure_logging
 from .observability import MetricsMiddleware, RequestIDMiddleware, metrics_endpoint
 from .routers.devops import router as devops_router
+from .routers.training import router as training_router
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -74,6 +75,7 @@ async def readyz() -> Dict[str, str]:
 
 
 app.include_router(devops_router)
+app.include_router(training_router)
 app.add_api_route("/metrics", metrics_endpoint, methods=["GET"], include_in_schema=False)
 
 

@@ -16,6 +16,10 @@ Production-ready platform combining FastAPI agents with a modern React control p
 - **Tooling**: Makefile targets, Dockerfiles for API/UI, Docker Compose for local orchestration
 - **Observability**: `/healthz`, `/readyz`, `/metrics` (Prometheus), request IDs on every response, structured JSON logs
 
+## Planning Documents
+- Product Definition (Brief + PRD): `docs/product-definition-prd.md`
+- Architecture Design Draft (Phase 3 / MVP): `docs/architecture-draft.md`
+
 ## Requirements
 - Python 3.12+
 - Node.js 20+
@@ -86,6 +90,9 @@ The API image exposes port `8000`; the UI image serves static assets via NGINX o
 - `POST /devops/predict-build` → `{ prediction, db_id }`
 - `POST /devops/check-build-status` → `{ status, db_id }`
 - `GET /healthz` / `GET /readyz` for monitoring probes
+- `GET /training/lifecycle` and `GET /training/modules` for learner content
+- `POST /training/plans` and `POST /training/plans/{plan_id}/execute` for workflow simulation
+- `POST /training/runs/{run_id}/approval` for approval-gated progression
 
 ## Production Notes
 - Configure secrets via environment variables or secret stores; the UI never persists API keys.
