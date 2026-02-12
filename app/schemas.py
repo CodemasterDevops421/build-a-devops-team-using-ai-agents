@@ -54,3 +54,60 @@ class BuildPredictRequest(BaseModel):
 
 class StatusRequest(BaseModel):
     image_tag: str = Field(..., min_length=1)
+
+
+class TrainingModule(BaseModel):
+    id: str
+    title: str
+    phase: str
+    duration_minutes: int
+    objective: str
+
+
+class LifecycleStage(BaseModel):
+    id: str
+    label: str
+    description: str
+    order: int
+
+
+class PlanTaskInput(BaseModel):
+    title: str = Field(..., min_length=3, max_length=120)
+    phase: str = Field(..., min_length=2, max_length=60)
+    risk_level: str = Field(..., pattern=r"^(low|medium|high)$")
+    rationale: str = Field(..., min_length=10, max_length=500)
+
+
+class PlanCreateRequest(BaseModel):
+    workspace_id: str = Field(..., min_length=3, max_length=80)
+    title: str = Field(..., min_length=3, max_length=120)
+    objective: str = Field(..., min_length=10, max_length=500)
+    tasks: List[PlanTaskInput] = Field(..., min_length=1, max_length=25)
+
+
+class PlanCreateResponse(BaseModel):
+    plan_id: str
+    status: str
+
+
+class RunTask(BaseModel):
+    id: str
+    title: str
+    phase: str
+    risk_level: str
+    status: str
+    rationale: str
+
+
+class WorkflowRunResponse(BaseModel):
+    run_id: str
+    plan_id: str
+    status: str
+    tasks: List[RunTask]
+    audit_events: List[dict]
+
+
+class ApprovalRequest(BaseModel):
+    task_id: str = Field(..., min_length=3)
+    decision: str = Field(..., pattern=r"^(approve|reject)$")
+    reason: str = Field(..., min_length=5, max_length=400)
