@@ -76,3 +76,21 @@ def test_approval_reject_marks_run_failed() -> None:
     )
     assert reject_resp.status_code == 200
     assert reject_resp.json()["status"] == "failed"
+
+
+def test_task_ids_are_unique_per_run() -> None:
+    client = TestClient(app)
+    plan_id = _make_plan(client)
+
+    first = client.post(f"/training/plans/{plan_id}/execute").json()
+    first_pending = next(task for task in first["tasks"] if task["status"] == "pending_approval")
+    client.post(
+        f"/training/runs/{first['run_id']}/approval",
+        json={"task_id": first_pending["id"], "decision": "approve", "reason": "Proceed"},
+    )
+
+    second = client.post(f"/training/plans/{plan_id}/execute").json()
+
+    first_ids = {task["id"] for task in first["tasks"]}
+    second_ids = {task["id"] for task in second["tasks"]}
+    assert first_ids.isdisjoint(second_ids)

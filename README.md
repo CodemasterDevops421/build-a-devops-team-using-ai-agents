@@ -92,6 +92,7 @@ The API image exposes port `8000`; the UI image serves static assets via NGINX o
 - `GET /healthz` / `GET /readyz` for monitoring probes
 - `GET /training/lifecycle` and `GET /training/modules` for learner content
 - `POST /training/plans` and `POST /training/plans/{plan_id}/execute` for workflow simulation
+- `GET /training/runs/{run_id}` to fetch run details
 - `POST /training/runs/{run_id}/approval` for approval-gated progression
 
 ## Production Notes

@@ -85,7 +85,7 @@ class WorkflowService:
             run_id = str(uuid4())
             tasks = [
                 TaskRecord(
-                    id=t.id,
+                    id=str(uuid4()),
                     title=t.title,
                     phase=t.phase,
                     risk_level=t.risk_level,
