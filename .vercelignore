@@ -1,0 +1,10 @@
+# Keep Vercel upload/build context lean
+frontend/
+docs/
+html/
+tests/
+.github/
+*.md
+*.sql
+**/__pycache__/
+**/.pytest_cache/
