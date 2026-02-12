@@ -97,8 +97,9 @@ The API image exposes port `8000`; the UI image serves static assets via NGINX o
 ## Production Notes
 - Configure secrets via environment variables or secret stores; the UI never persists API keys.
 - `requirements.txt` is deployment-focused (optimized for Vercel function size). Use `requirements-dev.txt` for local lint/test workflows and optional experimental agents.
+- `.vercelignore` trims non-runtime files from Vercel upload context to reduce deployment payload size.
 - Tune CORS by setting `ALLOWED_ORIGINS` to the deployed front-end hostname.
 - Enable TLS termination at the ingress/load balancer; the containers expose HTTP by default.
 - Add tracing by wiring OpenTelemetry instrumentation (hooks are in place via FastAPI middleware patterns).
 - Front-end assets build to `dist/` and are served by NGINX with long-lived cache headers.
-- `vercel.json` constrains packaged files for `app/main.py` to avoid Serverless unzipped size overruns.
+- `vercel.json` rewrites all routes to `api/index.py` (FastAPI ASGI entrypoint for Vercel).
