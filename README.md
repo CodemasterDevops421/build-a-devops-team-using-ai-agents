@@ -44,7 +44,7 @@ Duplicate `.env` files as needed from `frontend/.env.example` and `dot_env_examp
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 
 cd frontend
 npm install
@@ -96,6 +96,7 @@ The API image exposes port `8000`; the UI image serves static assets via NGINX o
 
 ## Production Notes
 - Configure secrets via environment variables or secret stores; the UI never persists API keys.
+- `requirements.txt` is deployment-focused (optimized for Vercel function size). Use `requirements-dev.txt` for local lint/test workflows and optional experimental agents.
 - Tune CORS by setting `ALLOWED_ORIGINS` to the deployed front-end hostname.
 - Enable TLS termination at the ingress/load balancer; the containers expose HTTP by default.
 - Add tracing by wiring OpenTelemetry instrumentation (hooks are in place via FastAPI middleware patterns).
